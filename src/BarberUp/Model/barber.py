@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from BarberUp.Model import Phone, Email
+from . import Phone, Email
 
 
 @dataclass

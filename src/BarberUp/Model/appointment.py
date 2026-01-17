@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from BarberUp.Model import Service, Barber, Client
+from . import Service, Barber, Client
 
 
 @dataclass
