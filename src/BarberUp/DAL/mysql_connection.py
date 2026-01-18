@@ -23,13 +23,14 @@ class MySQLConnection(DBConnection):
             cursor.close()
     
     def fetchone(self, query: str, params: Tuple[Any, ...] = ()) -> Optional[Tuple[Any, ...]]:
-        cursor: MySQLCursorAbstract = self._connection.cursor(dictionary=False)
+        cursor: MySQLCursorAbstract = self._connection.cursor(dictionary=False, buffered=True)
         try:
             cursor.execute(query, params)
             row = cursor.fetchone()
             if row is None:
                 return None
-            assert isinstance(row, tuple)
+            if not isinstance(row, tuple):
+                raise TypeError("Unexpected cursor row type")
             return row
         finally:
             cursor.close()
