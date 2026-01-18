@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from datetime import datetime
+from uuid import UUID
 from . import Service, Barber, Client
 
 
 @dataclass
 class Appointment:
-    id: int
+    id: UUID
     service: Service
     barber: Barber
     client: Client

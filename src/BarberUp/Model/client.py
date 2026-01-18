@@ -1,10 +1,11 @@
 from dataclasses import dataclass
+from uuid import UUID
 from . import Phone, Email, Password
 
 
 @dataclass
 class Client:
-    id: int
+    id: UUID
     name: str
     password: Password
     phone: Phone
