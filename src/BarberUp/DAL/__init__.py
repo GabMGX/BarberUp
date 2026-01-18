@@ -1,4 +1,4 @@
-from .mysql_connection import MySQL
+from .mysql_connection import MySQLConnection
 
 
-__all__ = ["MySQL"]
+__all__ = ["MySQLConnection"]
