@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Agendamento - Barber</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Agendar Horário</h2>
+
+    
+    <button type="button" id="btnAbrirCalendario">Escolher dia</button>
+
+    
+    <div id="calendario" style="display:none;"></div>
+
+   
+    <input type="date" id="data" hidden>
+
+    <form id="formAgendamento">
+      <select id="profissional" required>
+        <option value="">Selecione o profissional</option>
+        <option value="João">João</option>
+        <option value="Carlos">Carlos</option>
+        <option value="Pedro">Pedro</option>
+      </select>
+
+      
+      <div id="horariosDisponiveis"></div>
+
+      <button type="submit">Agendar</button>
+    </form>
+
+    <a href="index.html" class="voltar">Voltar</a>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

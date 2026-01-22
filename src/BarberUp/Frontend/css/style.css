@@ -1,0 +1,158 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000; 
+  color: #fff;          
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.container {
+  text-align: left;
+  width: 90%;
+  max-width: 500px;
+  padding: 20px;
+}
+
+h1, h2 {
+  margin-bottom: 20px;
+}
+
+button, .btn {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;         
+  background: #333;    
+  border: 2px solid #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+button:hover, .btn:hover {
+  background: #fff;    
+  color: #000;        
+}
+
+a {
+    color: burlywood;
+}
+
+a.voltar {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #fff;
+  text-decoration: none;
+}
+
+a.voltar:hover {
+  text-decoration: underline;
+}
+
+.login-form {
+    display: block;
+}
+
+input, select {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  font-size: 16px;
+  background: #222;
+  color: #fff;
+}
+
+input {
+    width: 95%;
+}
+
+input::placeholder {
+  color: #ccc;
+  opacity: 0.7;
+}
+
+#calendario {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.dia {
+  padding: 10px;
+  background: #222; 
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+
+.dia.selecionado {
+  background: #fff; 
+  color: #000;      
+  font-weight: bold;
+}
+
+.dia.inativo {
+  background: #555; 
+  color: #888;      
+  cursor: not-allowed;
+}
+
+#horariosDisponiveis {
+  margin: 10px 0;
+}
+
+#horariosDisponiveis button {
+  margin: 3px;
+  background: #222;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#horariosDisponiveis button.selecionado {
+  background: #fff;
+  color: #000;
+  font-weight: bold;
+}
+
+.agendamento {
+  background: #222;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  text-align: left;
+}
+
+@media(max-width: 500px){
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  button, .btn {
+    font-size: 1rem;
+    padding: 12px;
+  }
+
+  input, select {
+    font-size: 14px;
+    padding: 8px;
+  }
+}

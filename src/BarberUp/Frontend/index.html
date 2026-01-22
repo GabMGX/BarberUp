@@ -2,15 +2,65 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Barber</title>
+  <title>Login - Barber</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="container">
     <h1>Barber</h1>
-    <button class="btn" onclick="window.location.href='agendamento.html'">Agendar Horário</button>
-    <button class="btn" onclick="window.location.href='profissionais.html'">Profissionais</button>
+
+    <form class="login-form">
+      <label for="login">Nome:</label>
+      <input type="text" id="login" placeholder="Digite seu nome" required>
+
+      <label for="senha">Senha:</label>
+      <input type="password" id="senha" placeholder="Digite sua senha" required>
+
+      <label for="tipo">Tipo:</label>
+      <select id="tipo" required>
+        <option value="cliente">Cliente</option>
+        <option value="profissional">Profissional</option>
+      </select>
+
+      <button type="submit" class="btn">Entrar</button>
+    </form>
+
+    <p style="margin-top:10px;">
+      Ainda não tem conta?
+      <a href="cadastro.html">Cadastrar</a>
+    </p>
   </div>
+
+<script>
+document.querySelector('.login-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const nome = document.getElementById('login').value.trim();
+  const senha = document.getElementById('senha').value;
+  const tipoSelecionado = document.getElementById('tipo').value;
+
+  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+  const user = usuarios.find(u =>
+    u.nome.toLowerCase() === nome.toLowerCase() &&
+    u.senha === senha &&
+    u.tipo === tipoSelecionado
+  );
+
+  if (!user) {
+    alert("Nome, senha ou tipo inválido!");
+    return;
+  }
+
+  localStorage.setItem("usuarioLogado", JSON.stringify(user));
+
+  if (user.tipo === "cliente") {
+    window.location.href = "agendamento.html";
+  } else {
+    window.location.href = "profissionais.html";
+  }
+});
+</script>
 </body>
 </html>

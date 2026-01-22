@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro - Barber</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Cadastro</h1>
+
+    <form class="cadastro-form">
+      <label for="nome">Nome Completo:</label>
+      <input type="text" id="nome" placeholder="Seu nome" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" placeholder="Seu email" required>
+
+      <label for="telefone">Telefone:</label>
+      <input type="tel" id="telefone" placeholder="(XX) XXXXX-XXXX" maxlength="15" required>
+
+      <label for="senha">Senha:</label>
+      <input type="password" id="senha" placeholder="Crie uma senha" required>
+
+      <label for="tipo">Tipo de Cadastro:</label>
+      <select id="tipo" required>
+        <option value="">Selecione...</option>
+        <option value="cliente">Cliente</option>
+        <option value="profissional">Profissional</option>
+      </select>
+
+      <button type="submit" class="btn">Cadastrar</button>
+    </form>
+
+    <a href="index.html" class="voltar">Voltar</a>
+  </div>
+
+<script>
+const tel = document.getElementById('telefone');
+tel.addEventListener('input', function (e) {
+  let v = e.target.value.replace(/\D/g, '');
+  v = v.replace(/^(\d{2})(\d)/, '($1) $2');
+  v = v.replace(/(\d{5})(\d)/, '$1-$2');
+  e.target.value = v;
+});
+
+document.querySelector('.cadastro-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+  const novoUsuario = {
+    nome: document.getElementById('nome').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    telefone: document.getElementById('telefone').value.trim(),
+    senha: document.getElementById('senha').value,
+    tipo: document.getElementById('tipo').value
+  };
+
+  const existe = usuarios.some(u => u.nome.toLowerCase() === novoUsuario.nome.toLowerCase() && u.tipo === novoUsuario.tipo);
+  if (existe) {
+    alert("Usuário já existe!");
+    return;
+  }
+
+  usuarios.push(novoUsuario);
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  window.pywebview.api.singin(novoUsuario.nome, novoUsuario.email, novoUsuario.telefone, novoUsuario.senha, novoUsuario.tipo);
+
+
+  alert("Cadastro realizado com sucesso!");
+  window.location.href = "index.html";
+});
+</script>
+</body>
+</html>
