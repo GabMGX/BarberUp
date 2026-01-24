@@ -21,6 +21,20 @@ class BarberRepo(Repository[Barber]):
             email=Email(row[4]),
             active=bool(row[5])
         )
+    
+    def get_by_email(self, email: str) -> Barber | None:
+        row = self._db.fetchone("SELECT id, name, pwd_hash, phone, email, active FROM tb_barbers WHERE email = %s", (email,))
+        if row is None:
+            return None
+        
+        return Barber(
+            id=UUID(bytes=row[0]),
+            name=row[1],
+            password=Password(row[2]),
+            phone=Phone(row[3]),
+            email=Email(row[4]),
+            active=bool(row[5])
+        )
 
     def insert(self, entity: Barber) -> None:
         self._db.execute(

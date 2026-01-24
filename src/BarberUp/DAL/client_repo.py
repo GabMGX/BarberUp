@@ -22,6 +22,20 @@ class ClientRepo(Repository[Client]):
             active=bool(row[5])
         )
 
+    def get_by_email(self, email: str) -> Client | None:
+        row = self._db.fetchone("SELECT id, name, pwd_hash, phone, email, active FROM tb_clients WHERE email = %s", (email,))
+        if row is None:
+            return None
+        
+        return Client(
+            id=UUID(bytes=row[0]),
+            name=row[1],
+            password=Password(row[2]),
+            phone=Phone(row[3]),
+            email=Email(row[4]),
+            active=bool(row[5])
+        )
+
     def insert(self, entity: Client) -> None:
         self._db.execute(
             "INSERT INTO tb_clients (id, name, pwd_hash, phone, email, active) VALUES (%s, %s, %s, %s, %s, %s)",
