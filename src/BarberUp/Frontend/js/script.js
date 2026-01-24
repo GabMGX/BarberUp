@@ -72,32 +72,47 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = inputData.value;
     const profissional = selectProfissional.value;
     if(!data || !profissional) return;
-
-    const agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
     const horarios = gerarHorarios();
     let encontrou = false;
 
-    horarios.forEach(hora => {
-      const ocupado = agendamentos.some(a => a.data === data && a.hora === hora && a.profissional === profissional);
-      if(!ocupado && !horarioPassado(data,hora)) {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.textContent = hora;
-        btn.className = "btnHorario";
-        btn.addEventListener("click", () => {
-          document.querySelectorAll(".btnHorario").forEach(b => b.classList.remove("selecionado"));
-          btn.classList.add("selecionado");
-          inputData.dataset.horaSelecionada = hora; 
-        });
-        horariosDiv.appendChild(btn);
-        encontrou = true;
-      }
-    });
+    function render(agendamentos) {
+      horarios.forEach(hora => {
+        const ocupado = agendamentos.some(a => (a.date === data || a.data === data) && (a.time === hora || a.hora === hora) && (a.barber === profissional || a.professional === profissional || a.profissional === profissional));
+        if(!ocupado && !horarioPassado(data,hora)) {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.textContent = hora;
+          btn.className = "btnHorario";
+          btn.addEventListener("click", () => {
+            document.querySelectorAll(".btnHorario").forEach(b => b.classList.remove("selecionado"));
+            btn.classList.add("selecionado");
+            inputData.dataset.horaSelecionada = hora; 
+          });
+          horariosDiv.appendChild(btn);
+          encontrou = true;
+        }
+      });
 
-    if(!encontrou){
-      const span = document.createElement("span");
-      span.textContent = "Nenhum horário disponível";
-      horariosDiv.appendChild(span);
+      if(!encontrou){
+        const span = document.createElement("span");
+        span.textContent = "Nenhum horário disponível";
+        horariosDiv.appendChild(span);
+      }
+    }
+
+    // If running inside pywebview, call the Python API; otherwise fallback to localStorage
+    if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.getAppointments === "function") {
+      window.pywebview.api.getAppointments(profissional, data).then((serverAgendamentos) => {
+        // serverAgendamentos expected: [{id, client, date, time}, ...]
+        const agendamentos = (serverAgendamentos || []).map(a => ({data: a.date, hora: a.time, profissional: profissional}));
+        render(agendamentos);
+      }).catch(() => {
+        const agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
+        render(agendamentos);
+      });
+    } else {
+      const agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
+      render(agendamentos);
     }
   }
 

@@ -35,7 +35,7 @@ class API:
             user: Barber | Client = Client(id, username, pwd, phoneN, Email(email))
             ClientRepo(db).insert(user)
 
-        return {"id": user.name}
+        return {"id": str(user.id), "name": user.name}
 
     def login(self, email: str, password: str, type: str) -> dict[str, str]:
         global cur_user
@@ -56,7 +56,35 @@ class API:
             return {"error": "Senha inválida."}
 
         cur_user = user
-        return {"id": user.id.hex, "name": user.name}
+        return {"id": str(user.id), "name": user.name}
+    
+    def getAvailableBarbers(self) -> list[dict[str, str]]:
+        barbers = BarberRepo(db).get_all()
+        return [{"id": str(barber.id), "name": barber.name} for barber in barbers]
+
+    def getAppointments(self, barber_id: str, date: str) -> list[dict[str, str]]:
+        from uuid import UUID
+        from .DAL.appointment_repo import AppointmentRepo
+
+        try:
+            barber_uuid = UUID(barber_id)
+        except Exception:
+            return []
+
+        repo = AppointmentRepo(db)
+        appts = repo.get_by_barber_and_date(barber_uuid, date)
+
+        result: list[dict[str, str]] = []
+        for a in appts:
+            time_str = a.scheduled_at.strftime("%H:%M")
+            result.append({
+                "id": str(a.id),
+                "client": a.client.name,
+                "date": a.scheduled_at.date().isoformat(),
+                "time": time_str,
+            })
+
+        return result
 
 
 webview.create_window("BarberUp", "Frontend/index.html", width=390, height=720, js_api=API(), min_size=(390, 720), resizable=False)

@@ -35,6 +35,23 @@ class BarberRepo(Repository[Barber]):
             email=Email(row[4]),
             active=bool(row[5])
         )
+    
+    def get_all(self) -> list[Barber]:
+        rows = self._db.fetchall("SELECT id, name, pwd_hash, phone, email, active FROM tb_barbers WHERE active = TRUE")
+        barbers: list[Barber] = []
+        
+        for row in rows:
+            barber = Barber(
+                id=UUID(bytes=row[0]),
+                name=row[1],
+                password=Password(row[2]),
+                phone=Phone(row[3]),
+                email=Email(row[4]),
+                active=bool(row[5])
+            )
+            barbers.append(barber)
+        
+        return barbers
 
     def insert(self, entity: Barber) -> None:
         self._db.execute(

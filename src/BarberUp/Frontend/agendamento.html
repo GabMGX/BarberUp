@@ -18,12 +18,9 @@
    
     <input type="date" id="data" hidden>
 
+    <label for="barber">Barbeiro</label>
     <form id="formAgendamento">
       <select id="profissional" required>
-        <option value="">Selecione o profissional</option>
-        <option value="João">João</option>
-        <option value="Carlos">Carlos</option>
-        <option value="Pedro">Pedro</option>
       </select>
 
       
@@ -36,5 +33,20 @@
   </div>
 
   <script src="js/script.js"></script>
+
+  <script>
+    window.addEventListener('pywebviewready', () => {
+      window.pywebview.api.getAvailableBarbers().then(barbers => {
+        const select = document.getElementById("profissional");
+
+        barbers.forEach(barber => {
+          const option = document.createElement("option");
+          option.value = barber.id;
+          option.textContent = barber.name;
+          select.appendChild(option);
+        });
+      });
+    });
+  </script>
 </body>
 </html>

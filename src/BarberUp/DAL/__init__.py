@@ -3,6 +3,7 @@ from .mysql_connection import MySQLConnection
 from .repository import Repository
 from .client_repo import ClientRepo
 from .barber_repo import BarberRepo
+from .appointment_repo import AppointmentRepo
 
 
 __all__ = [
@@ -10,5 +11,6 @@ __all__ = [
     "MySQLConnection",
     "Repository",
     "BarberRepo",
-    "ClientRepo"
+    "ClientRepo",
+    "AppointmentRepo",
     ]
